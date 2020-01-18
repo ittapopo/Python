@@ -1,4 +1,6 @@
 import re
+from filecmp import cmp
+
 
 class Cell :
     def __init__ (self, inx) :
@@ -125,11 +127,10 @@ class Game :
             if cell.pvals != earlier :
                 changed = True
                 if self.track and len(cell.pvals) == 1 :
-                    print "Set (%s, %s) to %s" % (
-                        cell.row+1,cell.col+1,list(cell.pvals)[0])
+                    print("Set (%s, %s) to %s" % (cell.row + 1, cell.col + 1, list(cell.pvals)[0]))
         return changed
 
-    def getTagged(selfself) :
+    def getTagged(self) :
         tagged = {}
         for cell in self.cells :
             if cell.tag : tagged[cell.tag] = cell
