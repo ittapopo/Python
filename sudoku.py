@@ -5,3 +5,4 @@ class Cell :
         self.inx = inx
         self.val = 0            # unoccupied
         self.tag = ""           # with no special tag
+        # test
