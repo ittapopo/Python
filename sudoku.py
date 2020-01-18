@@ -114,4 +114,37 @@ class Game :
                 kidgames.append(g)
         return kidgames
 
-    def iterate(self):
+    def iterate(self) :
+        changed = False
+        for cell in self.cells :
+            earlier = cell.pvals.copy()
+            cell.update_pvals(self.cells)
+            if cell.error :
+                self.error = cell.error
+                return changed
+            if cell.pvals != earlier :
+                changed = True
+                if self.track and len(cell.pvals) == 1 :
+                    print "Set (%s, %s) to %s" % (
+                        cell.row+1,cell.col+1,list(cell.pvals)[0])
+        return changed
+
+    def getTagged(selfself) :
+        tagged = {}
+        for cell in self.cells :
+            if cell.tag : tagged[cell.tag] = cell
+        return tagged
+
+    def display(self) :
+        "convert sudoku game to multiline string"
+        span = range(9)
+        out = ""
+        for row in span :
+            if row == 3 or row == 6 : out += "------+-------+------\n"
+            for col in span :
+                if col == 3 or col == 6 : out += "| "
+                cell = self.cells[row*9+col]
+                what = cell.val or cell.tag or "."
+                out += "%s " % what
+            out += '\n'
+        return out
