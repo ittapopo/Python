@@ -15,7 +15,7 @@ class Cell :
         boxrow = (row/3) *3; boxcol=(col/3) *3
         crn=boxrow*9+boxcol
 
-        sameBox = range (crn,crn+3)+range(crn+9,crn+12)+range(crn+18,crn+21)
+        sameBox = range(crn,crn+3)+range(crn+9,crn+12)+range(crn+18,crn+21)
         sameRow = range(row*9,row*9+9)
         sameCol = range(col, 81, 9)
         sameBox.remove(inx); self.sameBox = tuple(sameBox)
