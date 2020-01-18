@@ -80,9 +80,38 @@ class Game :
                         cell.tag=char # A-z
                 self.cells[inx] = cell
             row += 1
-        if row != 9 : raise "Not a full 9 rows in the game"
+        if row != 9 : raise Exception("Not a full 9 rows in the game")
 
-    def clone(self):
+    def clone(self) :
         # return a clone of the game
         import copy
         return copy.deepcopy(self)
+
+    def finished(self) :
+        # return true if all cells have a value
+        a = filter(lambda x: x.val==0, self.cells)
+        return len(a) == 0
+
+    def valid(self) :
+        # return true if no cells have a error
+        a = filter(lambda x: x.error > "", self.cells)
+        return len(a) == 0
+
+    def split(self) :
+        # make list of cells that still have mult pvals
+        b = filter(lambda x: len(x.pvals) > 1, self.cells)
+        c = list(b)
+        # sort list by length of pvals. Shortest to the front
+        c.sort(lambda x,y: cmp(len(x.pvals),len(y.pvals)))
+        kidgames = []
+        if c :
+            cell = c[0]                  # take front most. It will be shortest
+            for val in cell.pvals :
+                g = self.clone()         # completely independent
+                cell = g.cells[cell.inx] # reach for the cloned cell
+                cell.val = val           # hard set the value
+                cell.pvals = set([val])  # and remove it from its pvals
+                kidgames.append(g)
+        return kidgames
+
+    def iterate(self):
