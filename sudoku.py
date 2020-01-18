@@ -24,4 +24,32 @@ class Cell :
         allvals = set([1, 2, 3, 4, 5, 6, 7, 8, 9]); self.error = ""
         for friends in (self.sameBox,self.sameRow,self.sameCol) :
             discards = {}       # what may be removed from self.pvals
+            grpvals = set([])   # as a group what vals are possible
+            friends = map(lambda x: cells[x], friends)  # list of cell objs
+            for other in friends :
+                key = tuple(other.pvals)    # its possible value(s)
+                discards[key] = discards.get(key,0) + 1
+                grpvals.update(other.pvals)
+            if grpvals.union(self.pvals) != allvals :
+                self.error = "Not all values 1-9 possible in %s" % friends
+                return False
+            uncovered = allvals.difference(grpvals)
+            if len(uncovered) == 1 :    # only possibility
+                self.pvals = uncovered
+            else :
+                for key in discards.keys() :
+                    if len(key) == discards[key] :
+                        for used in key :
+                            self.pvals.discard(used)
+            if len(self.pvals) == 1 :
+                self.val=tuple(self.pvals)[0]
+        return True
+
+    def __str__(s) :
+        return "(%s,%s)=%s" %(s.row+1, s.col+1, s.val)
+
+    __repr__ = __str__
+
+#------------------------------------------------------------------------------------------
+
 
