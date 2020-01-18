@@ -52,4 +52,37 @@ class Cell :
 
 #------------------------------------------------------------------------------------------
 
+class Game :
+    def __init__ (self, file, track=False) :
+        """Init game from file, one row per line
+        return 81 elem list (internal rep of game)"""
+        self.track = track      # show each update
+        self.error = None
+        fil = open(file)
+        row = 0
+        self.cells = [0]*81
+        while 1 :
+            lin = fil.readline()
+            if not lin : break
+            if lin[0] in '#-' : continue
+            lin = re.sub("\|", "" ,lin)  # rem vert bars
+            lin = re.sub(" ", "" ,lin)   # cells single letter
+            lin = lin[:-1] + "."*9
+            for col in range(9) :
+                inx = row*9+col
+                cell = Cell(inx)
+                char = lin[col]
+                try :
+                    cell.val=int(char)
+                    cell.pvals=set([cell.val])
+                except:
+                    if char >= 'A' :
+                        cell.tag=char # A-z
+                self.cells[inx] = cell
+            row += 1
+        if row != 9 : raise "Not a full 9 rows in the game"
 
+    def clone(self):
+        # return a clone of the game
+        import copy
+        return copy.deepcopy(self)
