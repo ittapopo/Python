@@ -20,4 +20,8 @@ class Cell :
         sameRow.remove(inx); self.sameRow = tuple(sameRow)
         sameCol.remove(inx); self.sameCol = tuple(sameCol)
 
+    def update_pvals(self, cells) :
+        allvals = set([1, 2, 3, 4, 5, 6, 7, 8, 9]); self.error = ""
+        for friends in (self.sameBox,self.sameRow,self.sameCol) :
+            discards = {}       # what may be removed from self.pvals
 
